@@ -1,5 +1,5 @@
 
-TOOL.Name = "Get Pos and Angle"
+TOOL.Name = "Get Trace Pos and Angle"
 TOOL.Category = "Dev Tools"
 
 if CLIENT then
