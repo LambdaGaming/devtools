@@ -3,9 +3,9 @@ TOOL.Name = "Get Self Pos and Angle"
 TOOL.Category = "Dev Tools"
 
 if CLIENT then
-	language.Add( "tool.getposang.name", "Get Self Pos and Angle" )
-	language.Add( "tool.getposang.desc", "Prints position and angle of yourself." )
-	language.Add( "tool.getposang.0", "Left-click: Get vector of yourself. Right-click: Get angle of yourself." )
+	language.Add( "tool.getposangself.name", "Get Self Pos and Angle" )
+	language.Add( "tool.getposangself.desc", "Prints position and angle of yourself." )
+	language.Add( "tool.getposangself.0", "Left-click: Get vector of yourself. Right-click: Get angle of yourself." )
 end
 
 local canfancytext = GetConVar( "DevTools_ShouldFancyText" ):GetBool()

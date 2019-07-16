@@ -3,9 +3,9 @@ TOOL.Name = "Get Trace Pos and Angle"
 TOOL.Category = "Dev Tools"
 
 if CLIENT then
-	language.Add( "tool.getposang.name", "Get Trace Pos and Angle" )
-	language.Add( "tool.getposang.desc", "Prints position and angle of target entity." )
-	language.Add( "tool.getposang.0", "Left-click: Get vector of eye trace entity. Right-click: Get angle of eye trace entity." )
+	language.Add( "tool.getposangtrace.name", "Get Trace Pos and Angle" )
+	language.Add( "tool.getposangtrace.desc", "Prints position and angle of target entity." )
+	language.Add( "tool.getposangtrace.0", "Left-click: Get vector of eye trace entity. Right-click: Get angle of eye trace entity." )
 end
 
 local canfancytext = GetConVar( "DevTools_ShouldFancyText" ):GetBool()
