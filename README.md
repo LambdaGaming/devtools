@@ -4,6 +4,7 @@ This is a collection of tools meant to be used in addon and/or server developmen
 <ul>
   <li>Get color of trace entity.</li>
   <li>Get index of trace entity.</li>
+  <li>Get model/material of trace entity.</li>
   <li>Get vector and angles of trace entity relative to world.</li>
   <li>Get vector and angles of local player.</li>
   <li>Get vector and angles relative to trace entity. (Not recommended for use on an active server. Could potentially break certain entities that rely on parents to work.)</li>
