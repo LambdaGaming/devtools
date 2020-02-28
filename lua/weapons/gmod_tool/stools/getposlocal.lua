@@ -8,28 +8,28 @@ if CLIENT then
 	language.Add( "tool.getposlocal.0", "Left-click: Get vector of trace relative to trace entity." )
 end
 
-local canclipboard = GetConVar( "DevTools_ShouldClipboard" ):GetBool()
-local canfancytext = GetConVar( "DevTools_ShouldFancyText" ):GetBool()
-
 function TOOL:LeftClick( tr )
 	if IsFirstTimePredicted() and CLIENT then
+		local canclipboard = GetConVar( "DevTools_ShouldClipboard" ):GetBool()
+		local canfancytext = GetConVar( "DevTools_ShouldFancyText" ):GetBool()
 		if IsValid( tr.Entity ) then
 			local trent = tr.Entity
 			trent:SetParent( self.Owner )
 			local pos = trent:GetLocalPos()
 			local formattedpos = "Vector( "..pos.x..", "..pos.y..", "..pos.z.." )"
 			if canfancytext then
-				self.Owner:ChatPrint( formattedpos )
+				chat.AddText( formattedpos )
 			else
-				self.Owner:ChatPrint( pos )
+				chat.AddText( tostring( pos ) )
 			end
 			if canclipboard then
 				if canfancytext then
 					SetClipboardText( formattedpos )
 				else
-					SetClipboardText( pos )
+					SetClipboardText( tostring( pos ) )
 				end
 			end
+			trent:SetParent( nil )
 		end
 	end
 end

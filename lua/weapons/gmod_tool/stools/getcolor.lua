@@ -8,24 +8,23 @@ if CLIENT then
 	language.Add( "tool.getcolor.0", "Left-click: Get color of target entity." )
 end
 
-local canfancytext = GetConVar( "DevTools_ShouldFancyText" ):GetBool()
-local canclipboard = GetConVar( "DevTools_ShouldClipboard" ):GetBool()
-
 function TOOL:LeftClick( tr )
 	if IsFirstTimePredicted() and CLIENT then
+		local canfancytext = GetConVar( "DevTools_ShouldFancyText" ):GetBool()
+		local canclipboard = GetConVar( "DevTools_ShouldClipboard" ):GetBool()
 		if IsValid( tr.Entity ) then
 			local color = tr.Entity:GetColor()
 			local formattedcolor = "Color( "..color.r..", "..color.g..", "..color.b..", "..color.a.." )"
 			if canfancytext then
-				self.Owner:ChatPrint( formattedcolor )
+				chat.AddText( formattedcolor )
 			else
-				self.Owner:ChatPrint( color )
+				chat.AddText( string.FromColor( color ) )
 			end
 			if canclipboard then
 				if canfancytext then
 					SetClipboardText( formattedcolor )
 				else
-					SetClipboardText( color )
+					SetClipboardText( string.FromColor( color ) )
 				end
 			end
 		end

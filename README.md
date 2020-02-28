@@ -1,27 +1,26 @@
 This is a collection of tools meant to be used in addon and/or server development.
 
-<h1>Tool List:</h1>
+# Tool List:
 <ul>
   <li>Get color of trace entity.</li>
   <li>Get index of trace entity.</li>
-  <li>Get model/material of trace entity.</li>
+  <li>Get model and material of trace entity.</li>
+  <li>Get vector and angle of local player.</li>
   <li>Get vector and angles of trace entity relative to world.</li>
-  <li>Get vector and angles of local player.</li>
-  <li>Get vector and angles relative to trace entity. (Not recommended for use on an active server. Could potentially break certain entities that rely on parents to work.)</li>
+  <li>Get vector and angles relative to trace entity.</li>
   <li>Get velocity of trace entity. (Supports MPH, KPH, and Hammer Units per second.)</li>
 </ul>
 
-
-<h1>ConVars:</h1>
+# Client Settings:
+These settings are now saved client-side instead of server-side and can be accessed through the options tab of the spawn menu.
 <ul>
-<li>DevTools_ShouldClipboard (Whether or not the text the tool prints out should also be copied to your clipboard. Default is 1.)</li>
-<li>DevTools_ShouldFancyText (Whether or not the text should print with words such as Vector() and Angle() or just the numbers alone. Default is 1.)</li>
+  <li>DevTools_ShouldClipboard (Should the text that a tool prints out be copied to your clipboard.)</li>
+  <li>DevTools_ShouldFancyText (Should the text that a tool prints out be formatted into a Lua function. (Ex: 0 0 0 gets formatted into Vector( 0, 0, 0 ))</li>
 </ul>
 
-<h1>ConCommands:</h1>
+# Console Commands:
 <ul>
-  <li>DevTools_Workshop (Links to this page if you need support.)</li>
+  <li>DevTools_Workshop (Links to the workshop page if you need support.)</li>
 </ul>
 
-
-If you have any suggestions or bug reports, post them here on Github or on the Workshop page <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=1614988605">here.</a>
+If you have any suggestions or bug reports, post them here on Github or on the [workshop page.](https://steamcommunity.com/sharedfiles/filedetails/?id=1614988605)
