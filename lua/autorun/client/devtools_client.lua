@@ -1,10 +1,12 @@
 
 CreateClientConVar( "DevTools_ShouldClipboard", 1, true, false, "Should the text that a tool prints out be copied to your clipboard." )
 CreateClientConVar( "DevTools_ShouldFancyText", 1, true, false, "Should the text that a tool prints out be formatted into a Lua function. (Ex: 0 0 0 gets formatted into Vector( 0, 0, 0 ))" )
+CreateClientConVar( "DevTools_ShouldRoundDecimals", 1, true, false, "Should angles and vectors have their decimals removed. Only available if fancy text is enabled." )
 hook.Add( "PopulateToolMenu", "DevToolsConfig", function()
     spawnmenu.AddToolMenuOption( "Options", "Dev Tools", "DevTools", "Config", "", "", function( panel )
 		panel:CheckBox( "Copy output text to clipboard", "DevTools_ShouldClipboard" )
 		panel:CheckBox( "Print text in a Lua format", "DevTools_ShouldFancyText" )
+		panel:CheckBox( "Remove decimal places in angle and vector values.", "DevTools_ShouldRoundDecimals" )
 	end )
 end )
 
