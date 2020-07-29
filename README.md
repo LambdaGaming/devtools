@@ -9,6 +9,7 @@ This is a collection of tools meant to be used in addon and/or server developmen
 - Get vector and angles relative to trace entity.
 - Get velocity of trace entity. (Supports MPH, KPH, and Hammer Units per second.)
 - Get class and name of trace entity.
+- Find all entities of a specified class on the map.
 
 # Client Settings:
 These settings are now saved client-side instead of server-side and can be accessed through the options tab of the spawn menu.
