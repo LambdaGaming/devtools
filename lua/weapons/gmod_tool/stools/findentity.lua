@@ -30,15 +30,8 @@ if CLIENT then
 		txt:SetValue( "Enter entity class name" )
 		txt.OnEnter = function( self )
 			mainframe:Close()
-			local find = ents.FindByClass( self:GetValue() )
-			if #find == 0 then
-				chat.AddText( "No entities with the class name '"..self:GetValue().."' could be found on the map." )
-				return
-			end
-			chat.AddText( "Found "..#find.." entities with the specified class name on the map." )
-			EntityTable = find
 			net.Start( "DevTools_FindEntity" )
-			net.WriteTable( find )
+			net.WriteString( self:GetValue() )
 			net.SendToServer()
 		end
 		ply.DevTextOpen = true
@@ -48,31 +41,42 @@ end
 if SERVER then
 	util.AddNetworkString( "DevTools_FindEntity" )
 	local function FindEntity( len, ply )
-		local find = net.ReadTable()
+		local ent = net.ReadString()
+		local find = ents.FindByClass( ent )
+		if #find == 0 then
+			ply:ChatPrint( "No entities with the class name '"..ent.."' could be found on the map." )
+			return
+		end
+		ply:ChatPrint( "Found "..#find.." entities with the specified class name on the map." )
 		EntityTable = find
 	end
 	net.Receive( "DevTools_FindEntity", FindEntity )
 
 	util.AddNetworkString( "DevTools_TeleTo" )
 	local function TeleTo( len, ply )
+		if EntityTable == nil or table.IsEmpty( EntityTable ) then
+			ply:ChatPrint( "Please press reload and enter an entity name." )
+			return
+		end
 		local forward = net.ReadBool()
 		if forward then
 			CurrentEntity = math.Clamp( CurrentEntity + 1, 1, #EntityTable )
 		else
 			CurrentEntity = math.Clamp( CurrentEntity - 1, 1, #EntityTable )
 		end
-		ply:SetPos( EntityTable[CurrentEntity]:GetPos() )
-		ply:ChatPrint( "Current Entity: "..CurrentEntity.." out of "..#EntityTable )
+		if IsValid( EntityTable[CurrentEntity] ) then
+			ply:SetPos( EntityTable[CurrentEntity]:GetPos() )
+			ply:ChatPrint( "Current Entity: "..CurrentEntity.." out of "..#EntityTable )
+		else
+			EntityTable[CurrentEntity] = nil
+			ply:ChatPrint( "The selected entity doesn't exist anymore. Removing from list." )
+		end
 	end
 	net.Receive( "DevTools_TeleTo", TeleTo )
 end
 
 function TOOL:LeftClick( tr )
 	if IsFirstTimePredicted() and CLIENT then
-		if EntityTable == nil or table.IsEmpty( EntityTable ) then
-			chat.AddText( "Please press reload and enter an entity name." )
-			return
-		end
 		net.Start( "DevTools_TeleTo" )
 		net.WriteBool( true )
 		net.SendToServer()
@@ -81,10 +85,6 @@ end
 
 function TOOL:RightClick( tr )
 	if IsFirstTimePredicted() and CLIENT then
-		if EntityTable == nil or table.IsEmpty( EntityTable ) then
-			chat.AddText( "Please press reload and enter an entity name." )
-			return
-		end
 		net.Start( "DevTools_TeleTo" )
 		net.SendToServer()
 	end
