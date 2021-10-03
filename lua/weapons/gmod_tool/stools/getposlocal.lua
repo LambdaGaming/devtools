@@ -15,8 +15,7 @@ function TOOL:LeftClick( tr )
 		local canround = GetConVar( "DevTools_ShouldRoundDecimals" ):GetBool()
 		if IsValid( tr.Entity ) then
 			local trent = tr.Entity
-			trent:SetParent( self.Owner )
-			local pos = trent:GetLocalPos()
+			local pos = trent:WorldToLocal( tr.HitPos )
 			local formattedpos = "Vector( "..pos.x..", "..pos.y..", "..pos.z.." )"
 			local decimal = "Vector( "..math.Round( pos.x )..", "..math.Round( pos.y )..", "..math.Round( pos.z ).." )"
 			local finaltext
