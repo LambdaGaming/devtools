@@ -4,16 +4,18 @@ TOOL.Category = "Dev Tools"
 
 local OpenText
 local EntityTable
-local CurrentEntity = 1
+local CurrentEntity = 0
 if CLIENT then
 	language.Add( "tool.findentity.name", "Find Entity" )
 	language.Add( "tool.findentity.desc", "Teleports players to entities of the specified class." )
 	language.Add( "tool.findentity.0", "Left-click: Teleport to the next found entity. Right-click: Teleport to the previous found entity. Reload: Open the " )
 
 	local MenuColor = Color( 49, 53, 61, 200 )
-	OpenText = function( ply )
+	OpenText = function()
+		local ply = LocalPlayer()
+		if ply.DevTextOpen then return end
 		local mainframe = vgui.Create( "DFrame" )
-		mainframe:SetTitle( "Class name input" )
+		mainframe:SetTitle( "" )
 		mainframe:SetSize( 200, 65 )
 		mainframe:Center()
 		mainframe:MakePopup()
@@ -27,7 +29,7 @@ if CLIENT then
 		local txt = vgui.Create( "DTextEntry", mainframe )
 		txt:Dock( LEFT )
 		txt:SetSize( 180, 25 )
-		txt:SetValue( "Enter entity class name" )
+		txt:SetPlaceholderText( "Enter class name" )
 		txt.OnEnter = function( self )
 			mainframe:Close()
 			net.Start( "DevTools_FindEntity" )
@@ -36,9 +38,13 @@ if CLIENT then
 		end
 		ply.DevTextOpen = true
 	end
+	net.Receive( "DevTools_OpenFindEntityMenu", function()
+		OpenText()
+	end )
 end
 
 if SERVER then
+	util.AddNetworkString( "DevTools_OpenFindEntityMenu" )
 	util.AddNetworkString( "DevTools_FindEntity" )
 	local function FindEntity( len, ply )
 		local ent = net.ReadString()
@@ -52,13 +58,12 @@ if SERVER then
 	end
 	net.Receive( "DevTools_FindEntity", FindEntity )
 
-	util.AddNetworkString( "DevTools_TeleTo" )
-	local function TeleTo( len, ply )
+	function TOOL:TeleTo( forward )
+		local ply = self:GetOwner()
 		if EntityTable == nil or table.IsEmpty( EntityTable ) then
 			ply:ChatPrint( "Please press reload and enter an entity name." )
 			return
 		end
-		local forward = net.ReadBool()
 		if forward then
 			CurrentEntity = math.Clamp( CurrentEntity + 1, 1, #EntityTable )
 		else
@@ -72,26 +77,23 @@ if SERVER then
 			ply:ChatPrint( "The selected entity doesn't exist anymore. Removing from list." )
 		end
 	end
-	net.Receive( "DevTools_TeleTo", TeleTo )
 end
 
 function TOOL:LeftClick( tr )
-	if IsFirstTimePredicted() and CLIENT then
-		net.Start( "DevTools_TeleTo" )
-		net.WriteBool( true )
-		net.SendToServer()
+	if IsFirstTimePredicted() and SERVER then
+		self:TeleTo( true )
 	end
 end
 
 function TOOL:RightClick( tr )
-	if IsFirstTimePredicted() and CLIENT then
-		net.Start( "DevTools_TeleTo" )
-		net.SendToServer()
+	if IsFirstTimePredicted() and SERVER then
+		self:TeleTo()
 	end
 end
 
 function TOOL:Reload( tr )
-	if IsFirstTimePredicted() and CLIENT and !self.Owner.DevTextOpen then
-		OpenText( self.Owner )
+	if IsFirstTimePredicted() and SERVER then
+		net.Start( "DevTools_OpenFindEntityMenu" )
+		net.Send( self:GetOwner() )
 	end
 end
