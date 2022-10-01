@@ -18,7 +18,4 @@ These settings are now saved client-side instead of server-side and can be acces
 - DevTools_ShouldFancyText (Whether or not the text that a tool prints out gets formatted into a Lua function. (Ex: 0 0 0 gets formatted into Vector( 0, 0, 0 ))
 - DevTools_ShouldRoundDecimals (Should angles and vectors have their decimals removed. Only available if fancy text is enabled.)
 
-# Console Commands:
-- DevTools_Workshop (Links to the workshop page if you need support.)
-
 If you have any suggestions or bug reports, post them here on Github or on the [workshop page.](https://steamcommunity.com/sharedfiles/filedetails/?id=1614988605)
