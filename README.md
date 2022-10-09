@@ -10,6 +10,7 @@ This is a collection of tools meant to be used in addon and/or server developmen
 - Get velocity of trace entity. (Supports MPH, KPH, and Hammer Units per second.)
 - Get class and name of trace entity.
 - Find all entities of a specified class on the map.
+- Create a boundary and get the upper and lower values of it
 
 # Client Settings:
 These settings are now saved client-side instead of server-side and can be accessed through the options tab of the spawn menu.
