@@ -1,24 +1,38 @@
-
-TOOL.Name = "Get Entity Index"
+TOOL.Name = "Get Entity IDs"
 TOOL.Category = "Dev Tools"
 
 if CLIENT then
-	language.Add( "tool.getentindex.name", "Get Entity Index" )
-	language.Add( "tool.getentindex.desc", "Prints the index number of the target entity." )
-	language.Add( "tool.getentindex.0", "Left-click: Get the index of the target entity. Right-click: Add index to a table of indexes. Reload: Print entire table of indexes to console. Also resets the table." )
+	language.Add( "tool.getentindex.name", "Get Entity IDs" )
+	language.Add( "tool.getentindex.desc", "Prints the index and creation IDs of the target entity." )
+	language.Add( "tool.getentindex.0", "Left-click: Get the index of target entity. Right-click: Get creation ID of target entity. Reload: Get map creation ID of target entity." )
 end
 
-local indexes = {}
+if SERVER then
+	util.AddNetworkString( "DevTools_GetEntIDs" )
+	util.AddNetworkString( "DevTools_SendEntIDs" )
+	net.Receive( "DevTools_GetEntIDs", function( len, ply )
+		local ent = net.ReadEntity()
+		local num = net.ReadInt( 3 )
+		local value
+		if num == 1 then
+			value = ent:EntIndex()
+		elseif num == 2 then
+			value = ent:GetCreationID()
+		else
+			value = ent:MapCreationID()
+		end
+		ply:ChatPrint( value )
+		DevTools_TryClipboard( ply, value )
+	end )
+end
 
 function TOOL:LeftClick( tr )
 	if IsFirstTimePredicted() and CLIENT then
-		local canclipboard = GetConVar( "DevTools_ShouldClipboard" ):GetBool()
 		if IsValid( tr.Entity ) then
-			local ind = tr.Entity:EntIndex()
-			chat.AddText( tostring( ind ) )
-			if canclipboard then
-				SetClipboardText( ind )
-			end
+			net.Start( "DevTools_GetEntIDs" )
+			net.WriteEntity( tr.Entity )
+			net.WriteInt( 1, 3 )
+			net.SendToServer()
 		end
 	end
 end
@@ -26,18 +40,21 @@ end
 function TOOL:RightClick( tr )
 	if IsFirstTimePredicted() and CLIENT then
 		if IsValid( tr.Entity ) then
-			local ind = tr.Entity:EntIndex()
-			table.insert( indexes, ind )
-			chat.AddText( "Index "..ind.." from entity "..tr.Entity:GetClass().." added to table." )
+			net.Start( "DevTools_GetEntIDs" )
+			net.WriteEntity( tr.Entity )
+			net.WriteInt( 2, 3 )
+			net.SendToServer()
 		end
 	end
 end
 
-function TOOL:Reload()
+function TOOL:Reload( tr )
 	if IsFirstTimePredicted() and CLIENT then
-		if #indexes < 1 then chat.AddText( "No collected ent index values detected." ) return end
-		for k,v in pairs( indexes ) do print( v ) end
-		table.Empty( indexes )
-		chat.AddText( "A table of collected ent indexes has been printed to your console." )
+		if IsValid( tr.Entity ) then
+			net.Start( "DevTools_GetEntIDs" )
+			net.WriteEntity( tr.Entity )
+			net.WriteInt( 3, 3 )
+			net.SendToServer()
+		end
 	end
 end

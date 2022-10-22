@@ -2,7 +2,7 @@ This is a collection of tools meant to be used in addon and/or server developmen
 
 # Tool List:
 - Get color of trace entity.
-- Get index of trace entity.
+- Get index, creation ID, and map creation ID of trace entity.
 - Get model and material of trace entity.
 - Get vector and angle of local player.
 - Get vector and angles of trace entity relative to world.
