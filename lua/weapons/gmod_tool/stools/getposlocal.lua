@@ -1,4 +1,3 @@
-
 TOOL.Name = "Get Pos Relative To Trace Entity"
 TOOL.Category = "Dev Tools"
 
@@ -10,31 +9,10 @@ end
 
 function TOOL:LeftClick( tr )
 	if IsFirstTimePredicted() and CLIENT then
-		local canclipboard = GetConVar( "DevTools_ShouldClipboard" ):GetBool()
-		local canfancytext = GetConVar( "DevTools_ShouldFancyText" ):GetBool()
-		local canround = GetConVar( "DevTools_ShouldRoundDecimals" ):GetBool()
 		if IsValid( tr.Entity ) then
 			local trent = tr.Entity
 			local pos = trent:WorldToLocal( tr.HitPos )
-			local formattedpos = "Vector( "..pos.x..", "..pos.y..", "..pos.z.." )"
-			local decimal = "Vector( "..math.Round( pos.x )..", "..math.Round( pos.y )..", "..math.Round( pos.z ).." )"
-			local finaltext
-			if canfancytext then
-				if canround then
-					chat.AddText( decimal )
-					finaltext = decimal
-				else
-					chat.AddText( formattedpos )
-					finaltext = formattedpos
-				end
-			else
-				chat.AddText( tostring( pos ) )
-				finaltext = formattedpos
-			end
-			if canclipboard then
-				SetClipboardText( finaltext )
-			end
-			trent:SetParent( nil )
+			DevTools_FormatVecAng( pos )
 		end
 	end
 end

@@ -1,4 +1,3 @@
-
 TOOL.Name = "Get Color"
 TOOL.Category = "Dev Tools"
 
@@ -11,7 +10,6 @@ end
 function TOOL:LeftClick( tr )
 	if IsFirstTimePredicted() and CLIENT then
 		local canfancytext = GetConVar( "DevTools_ShouldFancyText" ):GetBool()
-		local canclipboard = GetConVar( "DevTools_ShouldClipboard" ):GetBool()
 		if IsValid( tr.Entity ) then
 			local color = tr.Entity:GetColor()
 			local formattedcolor = "Color( "..color.r..", "..color.g..", "..color.b..", "..color.a.." )"
@@ -20,13 +18,14 @@ function TOOL:LeftClick( tr )
 			else
 				chat.AddText( string.FromColor( color ) )
 			end
-			if canclipboard then
-				if canfancytext then
-					SetClipboardText( formattedcolor )
-				else
-					SetClipboardText( string.FromColor( color ) )
-				end
+
+			local clipboard
+			if canfancytext then
+				clipboard = formattedcolor
+			else
+				clipboard = string.FromColor( color )
 			end
+			DevTools_TryClipboard( clipboard )
 		end
 	end
 end
