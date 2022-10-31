@@ -1,4 +1,3 @@
-
 TOOL.Name = "Find Entity"
 TOOL.Category = "Dev Tools"
 
@@ -8,7 +7,7 @@ local CurrentEntity = 0
 if CLIENT then
 	language.Add( "tool.findentity.name", "Find Entity" )
 	language.Add( "tool.findentity.desc", "Teleports players to entities of the specified class." )
-	language.Add( "tool.findentity.0", "Left-click: Teleport to the next found entity. Right-click: Teleport to the previous found entity. Reload: Open the " )
+	language.Add( "tool.findentity.0", "Left-click: Teleport to the next found entity. Right-click: Teleport to the previous found entity. Reload: Open input menu." )
 
 	local MenuColor = Color( 49, 53, 61, 200 )
 	OpenText = function()
