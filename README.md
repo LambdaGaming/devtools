@@ -1,4 +1,4 @@
-This is a collection of tools meant to be used in addon and/or server development.
+This is a collection of tools meant to be used in addon and/or server development. Most tools were designed to be used on servers, and do not work at all on single player. If you need to use a tool on single player, start a 2 player LAN game instead.
 
 # Tool List:
 - Get color of trace entity.
